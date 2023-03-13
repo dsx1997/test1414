@@ -27,16 +27,16 @@ function App() {
   );
 }
 
-class Square extends React.Component {
+function Square (props) {
   
-  render() {
+  
     return (
       
-      <button className="square" >
+      <button className="square">
         
       </button>
     );
-  }
+  
 }
 
 class Board extends React.Component {
