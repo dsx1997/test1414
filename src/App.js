@@ -41,8 +41,13 @@ function Square (props) {
 
 class Board extends React.Component {
 
+  
+
+  handleClick(i) {
+    console.log('in handleClick : ' + i);
+  }
   renderSquare(i) {
-    return <Square valProps1={i} />;
+    return <Square valProps1={i} funcProps1={() => this.handleClick(i)}/>;
   }
 
   render() {
