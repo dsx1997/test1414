@@ -41,42 +41,19 @@ function Square (props) {
 
 class Board extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      squares : Array(9).fill(null),
-      xIsNext : true,
-    }
-  }
+  
 
-  handleClick(i) {
-    
-    const squares = this.state.squares.slice();
-    squares[i] = (this.state.xIsNext) ? 'X' : 'O';
-    if(judgeWinner(this.state.squares)) {
-      return;
-    }
-    this.setState({
-      squares : squares,
-      xIsNext : !this.state.xIsNext,
-    });
-  }
+  
   renderSquare(i) {
-    return <Square valProps1={this.state.squares[i]} funcProps1={() => this.handleClick(i)}/>;
+    return <Square valProps1={this.props.valProps2[i]} funcProps1={() => this.props.funcProps2(i)}/>;
   }
 
   render() {
-    let winner = judgeWinner(this.state.squares);
-    let status;
-    if(winner) {
-      status = 'The Winner is : ' + winner;
-    } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-    }    
+      
 
     return (
       <div>
-        <div className="status">{status}</div>
+        
         <div className="board-row">
           {this.renderSquare(0)}
           {this.renderSquare(1)}
@@ -98,14 +75,45 @@ class Board extends React.Component {
 }
 
 class Game extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares : Array(9).fill(null),
+      xIsNext : true,
+    }
+  }
+
+  handleClick(i) {
+    console.log('handle click')
+    const squares = this.state.squares.slice();
+    squares[i] = (this.state.xIsNext) ? 'X' : 'O';
+    if(judgeWinner(this.state.squares)) {
+      return;
+    }
+    this.setState({
+      squares : squares,
+      xIsNext : !this.state.xIsNext,
+    });
+  }
+
   render() {
+
+    let winner = judgeWinner(this.state.squares);
+    let status;
+    if(winner) {
+      status = 'The Winner is : ' + winner;
+    } else {
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+    }  
+
     return (
       <div className="game">
         <div className="game-board">
-          <Board />
+          <Board valProps2={this.state.squares} funcProps2={(i) => this.handleClick(i)}/>
         </div>
         <div className="game-info">
-          <div>{/* status */}</div>
+          <div>{status}</div>
           <ol>{/* TODO */}</ol>
         </div>
       </div>
