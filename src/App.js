@@ -79,27 +79,38 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      squares : Array(9).fill(null),
+      history : [{
+        squares : Array(9).fill(null)
+      }],            
       xIsNext : true,
     }
   }
 
   handleClick(i) {
-    console.log('handle click')
-    const squares = this.state.squares.slice();
-    squares[i] = (this.state.xIsNext) ? 'X' : 'O';
-    if(judgeWinner(this.state.squares)) {
+    let history = this.state.history.slice();
+    let current = history[history.length - 1]; 
+    const squares = current.squares.slice();
+    
+    if(judgeWinner(squares) || squares[i]) {
       return;
     }
+
+    squares[i] = (this.state.xIsNext) ? 'X' : 'O';
+
     this.setState({
-      squares : squares,
+      history : history.concat([{
+        squares : squares,
+      }]),
       xIsNext : !this.state.xIsNext,
     });
   }
 
   render() {
 
-    let winner = judgeWinner(this.state.squares);
+    let history = this.state.history;
+    let current = history[history.length - 1];  
+
+    let winner = judgeWinner(current.squares);
     let status;
     if(winner) {
       status = 'The Winner is : ' + winner;
@@ -110,7 +121,7 @@ class Game extends React.Component {
     return (
       <div className="game">
         <div className="game-board">
-          <Board valProps2={this.state.squares} funcProps2={(i) => this.handleClick(i)}/>
+          <Board valProps2={current.squares} funcProps2={(i) => this.handleClick(i)}/>
         </div>
         <div className="game-info">
           <div>{status}</div>
